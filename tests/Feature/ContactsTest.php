@@ -49,8 +49,10 @@ class ContactsTest extends TestCase
     /** @test */
     public function an_unauthenticated_user_should_redirected_to_login()
     {
-        $response = $this->post('/api/contacts',
-            array_merge($this->data(), ['api_token' => '']));
+        $response = $this->post(
+            '/api/contacts',
+            array_merge($this->data(), ['api_token' => ''])
+        );
 
         $response->assertRedirect('/login');
         $this->assertCount(0, Contact::all());
@@ -83,8 +85,10 @@ class ContactsTest extends TestCase
     {
         collect(['name', 'email', 'birthday', 'company'])
             ->each(function ($field) {
-                $response = $this->post('/api/contacts',
-                    array_merge($this->data(), [$field => '']));
+                $response = $this->post(
+                    '/api/contacts',
+                    array_merge($this->data(), [$field => ''])
+                );
 
                 $response->assertSessionHasErrors($field);
                 $this->assertCount(0, Contact::all());
@@ -94,8 +98,10 @@ class ContactsTest extends TestCase
     /** @test */
     public function email_must_be_a_valid_email()
     {
-        $response = $this->post('/api/contacts',
-            array_merge($this->data(), ['email' => 'NOT AN EMAIL']));
+        $response = $this->post(
+            '/api/contacts',
+            array_merge($this->data(), ['email' => 'NOT AN EMAIL'])
+        );
 
         $response->assertSessionHasErrors('email');
         $this->assertCount(0, Contact::all());
@@ -106,14 +112,16 @@ class ContactsTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $response = $this->post('/api/contacts',
-            array_merge($this->data()));
+        $response = $this->post(
+            '/api/contacts',
+            array_merge($this->data())
+        );
 
         $this->assertCount(1, Contact::all());
         $this->assertInstanceOf(Carbon::class, Contact::first()->birthday);
         $this->assertEquals('05-14-1988', Contact::first()->birthday->format('m-d-Y'));
     }
-    
+
     /** @test */
     public function a_contact_can_be_retrieved()
     {
@@ -176,8 +184,10 @@ class ContactsTest extends TestCase
 
         $anotherUser = factory(User::class)->create();
 
-        $response = $this->patch('/api/contacts/' . $contact->id,
-            array_merge($this->data(), ['api_token' => $anotherUser->api_token]));
+        $response = $this->patch(
+            '/api/contacts/' . $contact->id,
+            array_merge($this->data(), ['api_token' => $anotherUser->api_token])
+        );
 
         $response->assertStatus(403);
     }
@@ -187,8 +197,10 @@ class ContactsTest extends TestCase
     {
         $contact = factory(Contact::class)->create(['user_id' => $this->user->id]);
 
-        $response = $this->delete('/api/contacts/' . $contact->id,
-            ['api_token' => $this->user->api_token]);
+        $response = $this->delete(
+            '/api/contacts/' . $contact->id,
+            ['api_token' => $this->user->api_token]
+        );
 
         $this->assertCount(0, Contact::all());
         $response->assertStatus(Response::HTTP_NO_CONTENT);
@@ -201,8 +213,10 @@ class ContactsTest extends TestCase
 
         $anotherUser = factory(User::class)->create();
 
-        $response = $this->delete('/api/contacts/' . $contact->id,
-            ['api_token' => $this->user->api_token]);
+        $response = $this->delete(
+            '/api/contacts/' . $contact->id,
+            ['api_token' => $this->user->api_token]
+        );
 
         $response->assertStatus(403);
     }

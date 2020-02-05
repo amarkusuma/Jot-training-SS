@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Contact::class);
     }
+
+    public function country()
+    {
+        return $this->hasMany(Country::class);
+    }
 }

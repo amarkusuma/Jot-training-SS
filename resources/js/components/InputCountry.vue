@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "InputField",
+  name: "InputCountry",
 
   props: ["name", "label", "placeholder", "errors", "data"],
 

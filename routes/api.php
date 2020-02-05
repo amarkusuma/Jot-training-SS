@@ -24,4 +24,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('birthdays', 'BirthdaysController@index');
 
     Route::post('search', 'SearchController@index');
+
+    Route::post('/country', 'CountryController@store');
+    Route::get('/country', 'CountryController@index');
+    Route::get('/country/{country}', 'CountryController@show');
+    Route::delete('/country/{country}', 'CountryController@destroy');
+    Route::patch('/country/{country}', 'CountryController@update');
 });
